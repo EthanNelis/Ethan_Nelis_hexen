@@ -6,8 +6,10 @@ public static class PositionHelper
 {
     public const int TileSize = 1;
 
-    public static Position WorldToCubePosition(Vector3 worldPosition)
+    public static Position WorldToGridPosition(Vector3 worldPosition)
     {
+        worldPosition.z = -worldPosition.z;
+
         float q = ((Mathf.Sqrt(3) / 3 * worldPosition.x - 1f / 3 * worldPosition.z) / TileSize);
 
         float r = ((2f / 3 * worldPosition.z) / TileSize);
@@ -47,11 +49,11 @@ public static class PositionHelper
         return Mathf.Abs(intValue - floatValue);
     }
 
-    public static Vector3 CubeToWorldPosition(Position gridPosition)
+    public static Vector3 GridToWorldPosition(Position gridPosition)
     {
         float xPosition = TileSize * (Mathf.Sqrt(3) * gridPosition.Q + Mathf.Sqrt(3) / 2 * gridPosition.R);
 
-        float zPosition = TileSize * (3 / 2 * gridPosition.R);
+        float zPosition = TileSize * (3f / 2 * gridPosition.R);
 
         float yPositionDefault = 0f;
 
