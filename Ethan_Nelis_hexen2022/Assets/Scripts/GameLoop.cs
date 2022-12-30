@@ -5,33 +5,38 @@ using UnityEngine;
 
 public class GameLoop : MonoBehaviour
 {
-    private Board _board;
+    private Board _board = new Board(PositionHelper.BoardRadius);
+    private Engine _engine;
+    private BoardView _boardView;
 
-    private void Start()
+    private void OnEnable()
     {
-        _board = new Board();
+        var boardView = FindObjectOfType<BoardView>();
+        boardView.CardDroppedOnTile += CardDropped;
+        boardView.CardHoveredOverTile += CardHovered;
+
+        var pieceViews = FindObjectsOfType<PieceView>();
+        foreach (PieceView pieceView in pieceViews)
+        {
+            _board.Place(pieceView, PositionHelper.WorldToGridPosition(pieceView.WorldPosition));
+        }
+
         _board.PieceMoved += (s, e) => e.Piece.MoveTo(PositionHelper.GridToWorldPosition(e.ToPosition));
-        _board.PieceTaken += (s, e) => e.Piece.Taken();
-        _board.PiecePlaced += (s, e) => e.Piece.Placed(PositionHelper.GridToWorldPosition(e.ToPosition));
-
-        PieceView[] pieceViews = FindObjectsOfType<PieceView>();
-
-        foreach(PieceView pieceView in pieceViews)
-        {
-            _board.Place(PositionHelper.WorldToGridPosition(pieceView.WorldPosition), pieceView);
-        }
-
-        BoardView boardView = FindObjectOfType<BoardView>();
-        boardView.PositionClicked += OnPositionClicked;
     }
 
-    private void OnPositionClicked(object sender, PositionEventArgs e)
+    private void CardHovered(object sender, CardEventArgs cardEventArgs)
+    { } // Debug.Log($"{cardEventArgs.CardType} hovered over position {cardEventArgs.Position}");
+
+
+    private void CardDropped(object sender, CardEventArgs cardEventArgs)
     {
-        if(_board.TryGetPieceAt(e.Position, out var piece))
+        if (_board.TryGetPieceAt(cardEventArgs.Position, out var piece))
         {
-            // TODO : Adjust code to be able to move to correct positions
-            Position toPosition = new Position(e.Position.Q, e.Position.R, e.Position.S);
-            _board.Move(e.Position, toPosition);
+            Debug.Log($"Position contains {piece.Name}");
+
+            var toPosition = new Position(cardEventArgs.Position.Q , cardEventArgs.Position.R + 1, cardEventArgs.Position.S - 1);
+            _board.Move(cardEventArgs.Position, toPosition);
         }
     }
+
 }

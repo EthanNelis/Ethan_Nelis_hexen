@@ -4,6 +4,8 @@ using UnityEngine;
 
 public static class PositionHelper
 {
+    public const int BoardRadius = 3;
+
     public const int TileSize = 1;
 
     public static Position WorldToGridPosition(Vector3 worldPosition)
@@ -53,7 +55,7 @@ public static class PositionHelper
     {
         float xPosition = TileSize * (Mathf.Sqrt(3) * gridPosition.Q + Mathf.Sqrt(3) / 2 * gridPosition.R);
 
-        float zPosition = TileSize * (3f / 2 * gridPosition.R);
+        float zPosition = -(TileSize * (3f / 2 * gridPosition.R));
 
         float yPositionDefault = 0f;
 

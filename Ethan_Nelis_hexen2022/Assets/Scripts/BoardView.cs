@@ -2,27 +2,84 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class PositionEventArgs : EventArgs
+public class CardEventArgs : EventArgs
 {
     public Position Position { get; }
+    public CardType CardType { get; }
 
-    public PositionEventArgs(Position position)
+    public CardEventArgs(Position position, CardType cardType)
     {
         Position = position;
+
+        CardType = cardType;
     }
 }
 
 public class BoardView : MonoBehaviour
 {
-    public event EventHandler<PositionEventArgs> PositionClicked;
+    public event EventHandler<CardEventArgs> CardDroppedOnTile;
+    public event EventHandler<CardEventArgs> CardHoveredOverTile;
 
-    protected virtual void OnPositionClicked(PositionEventArgs e)
+    // public event EventHandler<CardEventArgs> CardDropped;
+
+
+    // public event EventHandler<CardEventArgs> PositionSelected;
+
+    //internal void SetActivePositions()
+    //{
+    //    throw new NotImplementedException();
+    //}
+
+
+    //private readonly Dictionary<Position, TileView> _tiles = new Dictionary<Position, TileView>();
+
+    private void OnEnable()
     {
-        var handler = PositionClicked;
-        handler?.Invoke(this, e);
+        var tileViews = GetComponentsInChildren<TileView>();
+        foreach (TileView tileView in tileViews)
+        {
+            tileView.CardDropped += OnCardDroppedOnTileView;
+            tileView.CardHovered += OnCardHoveredOverTileView;
+        }
     }
 
-    internal void ChildClicked(PositionView positionView)
-    => OnPositionClicked(new PositionEventArgs(positionView.GridPosition));
+
+
+    private void OnCardDroppedOnTileView(object sender, PointerEventData eventData)
+    {
+        if (sender is TileView tileView)
+        {
+            var position = PositionHelper.WorldToGridPosition(tileView.WorldPosition);
+            CardType cardType = eventData.pointerDrag.GetComponent<CardView>().Type;
+            
+            OnCardDroppedOnTile(new CardEventArgs(position, cardType));
+        }
+    }
+
+    private void OnCardHoveredOverTileView(object sender, PointerEventData eventData)
+    {
+        if (sender is TileView tileView)
+        {
+            var position = PositionHelper.WorldToGridPosition(tileView.WorldPosition);
+            CardType cardType = eventData.pointerDrag.GetComponent<CardView>().Type;
+
+            OnCardHoveredOverTile(new CardEventArgs(position, cardType));
+        }
+    }
+
+    protected virtual void OnCardDroppedOnTile(CardEventArgs cardEventArgs)
+    {
+        var handler = CardDroppedOnTile;
+        handler?.Invoke(this, cardEventArgs);
+    }
+
+    protected virtual void OnCardHoveredOverTile(CardEventArgs cardEventArgs)
+    {
+        var handler = CardHoveredOverTile;
+        handler?.Invoke(this, cardEventArgs);
+    }
+
 }
+
