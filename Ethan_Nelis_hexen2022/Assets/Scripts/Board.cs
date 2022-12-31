@@ -53,6 +53,9 @@ public class Board
     
     private Dictionary<Position, PieceView> _pieces = new Dictionary<Position, PieceView>();
 
+    private Position _playerPosition = new Position(0, 0, 0);
+
+    public Position PlayerPosition => _playerPosition;
 
     public Board(int radius)
     {
@@ -70,8 +73,6 @@ public class Board
     => (position.Q <= _radius && position.Q >= -_radius)
     && (position.R <= _radius && position.R >= -_radius)
     && (position.S <= _radius && position.S >= -_radius);
-
-
 
 
     public bool Place(PieceView piece, Position toPosition)
@@ -107,6 +108,11 @@ public class Board
             return false;
 
         _pieces[toPosition] = piece;
+
+        if (piece.Type == PieceType.Player)
+        {
+            _playerPosition = toPosition;
+        }
 
         OnPieceMoved(new PieceMovedEventArgs(piece, fromPosition, toPosition));
 

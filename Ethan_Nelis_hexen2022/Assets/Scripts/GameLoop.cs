@@ -11,6 +11,8 @@ public class GameLoop : MonoBehaviour
 
     private void OnEnable()
     {
+        _engine = new Engine(_board);
+
         var boardView = FindObjectOfType<BoardView>();
         boardView.CardDroppedOnTile += CardDropped;
         boardView.CardHoveredOverTile += CardHovered;
@@ -25,18 +27,18 @@ public class GameLoop : MonoBehaviour
     }
 
     private void CardHovered(object sender, CardEventArgs cardEventArgs)
-    { } // Debug.Log($"{cardEventArgs.CardType} hovered over position {cardEventArgs.Position}");
+    { } // Highlight logic to be added here
 
 
     private void CardDropped(object sender, CardEventArgs cardEventArgs)
     {
-        if (_board.TryGetPieceAt(cardEventArgs.Position, out var piece))
-        {
-            Debug.Log($"Position contains {piece.Name}");
+        var validPositions = _engine.MoveSets.MoveSet(cardEventArgs.CardType).Positions(cardEventArgs.Position);
 
-            var toPosition = new Position(cardEventArgs.Position.Q , cardEventArgs.Position.R + 1, cardEventArgs.Position.S - 1);
-            _board.Move(cardEventArgs.Position, toPosition);
-        }
+        if(validPositions.Count > 0)
+        {
+            _engine.PlayCard(_engine.MoveSets.MoveSet(cardEventArgs.CardType), cardEventArgs.Position);
+            Debug.Log(cardEventArgs.CardType + "played at position : " + cardEventArgs.Position);
+        }  
     }
 
 }

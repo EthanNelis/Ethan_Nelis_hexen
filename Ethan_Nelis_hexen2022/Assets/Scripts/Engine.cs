@@ -8,15 +8,16 @@ public class Engine
 {
     private readonly Board _board;
 
+    public MoveSetCollection MoveSets { get; }
+
     public Engine(Board board)
     {
         _board = board;
+        MoveSets = new MoveSetCollection(_board);
     }
 
-    public bool Move(Position fromPosition, Position toPosition)
+    public bool PlayCard(CardMoveSet cardMoveSet, Position hoverPosition)
     {
-        return false;
+        return cardMoveSet.Execute(hoverPosition, _board.PlayerPosition);
     }
-
 }
-
