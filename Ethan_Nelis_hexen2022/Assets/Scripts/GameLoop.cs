@@ -13,9 +13,10 @@ public class GameLoop : MonoBehaviour
     {
         _engine = new Engine(_board);
 
-        var boardView = FindObjectOfType<BoardView>();
-        boardView.CardDroppedOnTile += CardDropped;
-        boardView.CardHoveredOverTile += CardHovered;
+        _boardView = FindObjectOfType<BoardView>();
+        _boardView.CardDroppedOnTile += CardDropped;
+        _boardView.CardHoveredOverTile += CardHovered;
+        _boardView.StopHoveredOverTile += StopHovered;
 
         var pieceViews = FindObjectsOfType<PieceView>();
         foreach (PieceView pieceView in pieceViews)
@@ -26,8 +27,17 @@ public class GameLoop : MonoBehaviour
         _board.PieceMoved += (s, e) => e.Piece.MoveTo(PositionHelper.GridToWorldPosition(e.ToPosition));
     }
 
+    private void StopHovered(object sender, EventArgs e)
+    {
+        List<Position> emptyList = new List<Position>();
+        _boardView.SetActivePositions(emptyList);
+    }
+
     private void CardHovered(object sender, CardEventArgs cardEventArgs)
-    { } // Highlight logic to be added here
+    {
+        var validPositions = _engine.MoveSets.MoveSet(cardEventArgs.CardType).Positions(cardEventArgs.Position);
+        _boardView.SetActivePositions(validPositions);
+    }
 
 
     private void CardDropped(object sender, CardEventArgs cardEventArgs)
@@ -37,7 +47,9 @@ public class GameLoop : MonoBehaviour
         if(validPositions.Count > 0)
         {
             _engine.PlayCard(_engine.MoveSets.MoveSet(cardEventArgs.CardType), cardEventArgs.Position);
-            Debug.Log(cardEventArgs.CardType + "played at position : " + cardEventArgs.Position);
+
+            List<Position> emptyList = new List<Position>();
+            _boardView.SetActivePositions(emptyList);
         }  
     }
 

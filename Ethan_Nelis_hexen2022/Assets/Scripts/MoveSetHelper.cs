@@ -3,28 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
-
-public class MoveSetHelper
+public static class MoveSetHelper
 {
-    private List<Position> _validPositions = new List<Position>();
-
-    public Position AddPositions(Position position, Position direction)
-    {
-        return new Position(position.Q + direction.Q, position.R + direction.R, position.S + direction.S);
-    }
-
-    public bool IsNeighbor(Position position1, Position position2)
-    {
-        return false;
-    }
-
-    public Position Right() => new Position(1, 0, -1);
-    public Position Left() => new Position(-1, 0, 1);
-    public Position ForwardRight() => new Position(1, -1, 0);
-    public Position ForwardLeft() => new Position(0, -1, 1);
-    public Position BackwardRight() => new Position(0, 1, -1);
-    public Position BackwardLeft() => new Position(-1, 1, 0);
-
-
+    public static Vector3[] Directions 
+        = new Vector3[] { Right(), Left(), ForwardRight(), ForwardLeft(), BackwardRight(), BackwardLeft() };
+  
+    public static Vector3 Right() => new Vector3(1, 0, -1);
+    public static Vector3 Left() => new Vector3(-1, 0, 1);
+    public static Vector3 ForwardRight() => new Vector3(1, -1, 0);
+    public static Vector3 ForwardLeft() => new Vector3(0, -1, 1);
+    public static Vector3 BackwardRight() => new Vector3(0, 1, -1);
+    public static Vector3 BackwardLeft() => new Vector3(-1, 1, 0);
 }

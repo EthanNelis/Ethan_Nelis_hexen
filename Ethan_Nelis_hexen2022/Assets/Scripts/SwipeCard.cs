@@ -14,4 +14,9 @@ public class SwipeCard : CardMoveSet
     {
         throw new NotImplementedException();
     }
+
+    public override bool Execute(Position hoverPosition, Position playerPosition)
+    {
+        return base.Execute(hoverPosition, playerPosition);
+    }
 }

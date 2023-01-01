@@ -11,14 +11,15 @@ public class TileView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     
     public event EventHandler<PointerEventData> CardHovered;
 
+    public event EventHandler StopHovered;
+
     public Vector3 WorldPosition => transform.position;
 
+    [SerializeField]
+    private UnityEvent OnActivation;
 
-    //[SerializeField]
-    //private UnityEvent OnActivation;
-
-    //[SerializeField]
-    //private UnityEvent OnDeactivation;
+    [SerializeField]
+    private UnityEvent OnDeactivation;
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -32,10 +33,7 @@ public class TileView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     => OnCardDropped(eventData);
 
     public void OnPointerExit(PointerEventData eventData)
-    {
-
-    }
-
+    => OnStopHovered(EventArgs.Empty);
 
     protected virtual void OnCardHovered(PointerEventData eventData)
     {
@@ -49,9 +47,15 @@ public class TileView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         CardDropped?.Invoke(this, eventData);
     }
 
-    //internal void Activate()
-    //    => OnActivation?.Invoke();
+    protected virtual void OnStopHovered(EventArgs e)
+    {
+        var handler = StopHovered;
+        handler?.Invoke(this, e);
+    }
 
-    //internal void Deactivate()
-    //    => OnActivation?.Invoke();
+    internal void Activate()
+        => OnActivation?.Invoke();
+
+    internal void Deactivate()
+        => OnDeactivation?.Invoke();
 }

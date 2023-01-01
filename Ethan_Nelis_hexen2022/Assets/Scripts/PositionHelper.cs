@@ -10,55 +10,54 @@ public static class PositionHelper
 
     public static Position WorldToGridPosition(Vector3 worldPosition)
     {
-        worldPosition.z = -worldPosition.z;
+        int q = Mathf.RoundToInt((Mathf.Sqrt(3) / 3f * worldPosition.x - 1f / 3f * worldPosition.z) / TileSize);
 
-        float q = ((Mathf.Sqrt(3) / 3 * worldPosition.x - 1f / 3 * worldPosition.z) / TileSize);
+        int r = Mathf.RoundToInt((2f / 3f * worldPosition.z) / TileSize);
 
-        float r = ((2f / 3 * worldPosition.z) / TileSize);
+        int s = -q - r;
 
-        float s = -q - r;
-
-        return RoundCubeCoordinates(q, r, s);
-    }
-
-    private static Position RoundCubeCoordinates(float q, float r, float s)
-    {
-        int qInt = Mathf.RoundToInt(q);
-        int rInt = Mathf.RoundToInt(r);
-        int sInt = Mathf.RoundToInt(s);
-
-        float qDifference = GetFractionalPart(q, qInt);
-        float rDifference = GetFractionalPart(r, rInt);
-        float sDifference = GetFractionalPart(s, sInt);
-    
-        if (qDifference > rDifference && qDifference > sDifference)
-        {
-            qInt = -rInt - sInt;
-        }
-        else if (rDifference > sDifference)
-        {
-            rInt = -qInt - sInt;
-        }
-        else
-        {
-            sInt = -qInt - rInt;
-        }
-        return new Position(qInt, rInt, sInt);
-    }
-
-    private static float GetFractionalPart(float floatValue, int intValue)
-    {
-        return Mathf.Abs(intValue - floatValue);
+        return new Position(q, r, s);
     }
 
     public static Vector3 GridToWorldPosition(Position gridPosition)
     {
-        float xPosition = TileSize * (Mathf.Sqrt(3) * gridPosition.Q + Mathf.Sqrt(3) / 2 * gridPosition.R);
+        float xPosition = TileSize * (Mathf.Sqrt(3) * gridPosition.Q + Mathf.Sqrt(3) / 2f * gridPosition.R);
 
-        float zPosition = -(TileSize * (3f / 2 * gridPosition.R));
+        float zPosition = TileSize * (3f / 2f * gridPosition.R);
 
         float yPositionDefault = 0f;
 
         return new Vector3(xPosition, yPositionDefault, zPosition);
+    }
+
+    public static Position Subtract(Position position1, Position position2)
+        => new Position(position1.Q - position2.Q, position1.R - position2.R, position1.S - position2.S);
+
+    public static Position Add(Position position1, Position position2)
+        => new Position(position1.Q + position2.Q, position1.R + position2.R, position1.S + position2.S);
+
+    public static Position GetDirection(Position position1, Position position2)
+    {
+        Position direction = Subtract(position1,position2);
+
+        int Q = direction.Q;
+        if(Q != 0)
+        {
+            Q /= Mathf.Abs(direction.Q);
+        }
+
+        int R = direction.R;
+        if (R != 0)
+        {
+            R /= Mathf.Abs(direction.R);
+        }
+
+        int S = direction.S;
+        if (S != 0)
+        {
+            S /= Mathf.Abs(direction.S);
+        }
+
+        return new Position(Q, R, S);
     }
 }
