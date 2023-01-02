@@ -17,6 +17,8 @@ public class SwipeCard : CardMoveSet
 
     public override List<Position> Positions(Position hoverPosition)
     {
+        _positions.Clear();
+
         // Selects all the valid tiles neighboring the player tile
         foreach (Vector3 direction in MoveSetHelper.Directions)
         {
