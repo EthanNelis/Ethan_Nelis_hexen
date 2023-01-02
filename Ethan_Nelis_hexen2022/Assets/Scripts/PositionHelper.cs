@@ -60,4 +60,11 @@ public static class PositionHelper
 
         return new Position(Q, R, S);
     }
+
+    public static int Distance(Position position1, Position position2)
+    {
+        Position difference = Subtract(position1, position2);
+
+        return (Mathf.Abs(difference.Q) + Mathf.Abs(difference.R) + Mathf.Abs(difference.S)) / 2;
+    }
 }

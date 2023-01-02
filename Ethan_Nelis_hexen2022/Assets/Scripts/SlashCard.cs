@@ -42,8 +42,6 @@ public class SlashCard : CardMoveSet
                 {
                     Position direction = PositionHelper.GetDirection(hoverPosition, Board.PlayerPosition);
 
-                    Debug.Log(direction);
-
                     Position pos = PositionHelper.Add(Board.PlayerPosition, direction);
                     while (Board.IsValid(pos))
                     {
