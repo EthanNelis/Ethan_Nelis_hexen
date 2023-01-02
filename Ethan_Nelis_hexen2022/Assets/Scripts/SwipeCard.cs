@@ -34,7 +34,6 @@ public class SwipeCard : CardMoveSet
         if (_positions.Contains(hoverPosition))
         {
             List<Position> filteredPositions = new List<Position>();
-            filteredPositions.Add(hoverPosition);
 
             foreach (Position position in _positions)
             {
