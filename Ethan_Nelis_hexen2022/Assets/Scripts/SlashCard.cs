@@ -13,6 +13,8 @@ public class SlashCard : CardMoveSet
 
     private List<Position> _positions = new List<Position>();
 
+    private bool _canExecute;
+
     public override List<Position> Positions(Position hoverPosition)
     {
         // Selects all valid tiles in straight lines from the player position (not included)
@@ -26,7 +28,9 @@ public class SlashCard : CardMoveSet
                 position = PositionHelper.Add(position, PositionHelper.WorldToGridPosition(direction));
             }
         }
-        
+
+        _canExecute = true;
+
         // If one of the previously selected tiles contains the hoverposition:
         // creates a straight line from player position (not included) passing through hover position
         foreach(Position position in _positions)
@@ -54,21 +58,26 @@ public class SlashCard : CardMoveSet
             }
         }
 
+        _canExecute = false;
+
         return _positions;
     }
 
     public override bool Execute(Position hoverPosition, Position playerPosition)
     {
-        foreach(Position position in _positions)
+        if (_canExecute)
         {
-            if(Board.TryGetPieceAt(position, out PieceView piece))
+            foreach (Position position in _positions)
             {
-                piece.Taken();
-                Board.Take(position);
+                if (Board.TryGetPieceAt(position, out PieceView piece))
+                {
+                    piece.Taken();
+                    Board.Take(position);
+                }
             }
         }
-
         return true;
+
     }
 }
 
