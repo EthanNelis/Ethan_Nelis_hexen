@@ -75,9 +75,9 @@ public class SlashCard : CardMoveSet
                     Board.Take(position);
                 }
             }
+            return true;
         }
-        return true;
-
+        return false;
     }
 }
 

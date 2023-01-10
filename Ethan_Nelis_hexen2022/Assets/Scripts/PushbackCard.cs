@@ -80,9 +80,10 @@ public class PushbackCard : CardMoveSet
                     
                 }
             }
+            return true;
         }
+        return false;
 
-        return true;
     }
 }
 

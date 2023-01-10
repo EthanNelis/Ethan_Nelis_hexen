@@ -66,8 +66,8 @@ public class SwipeCard : CardMoveSet
                     Board.Take(position);
                 }
             }
+            return true;
         }
-
-        return true;
+        return false;
     }
 }

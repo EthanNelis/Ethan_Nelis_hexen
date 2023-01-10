@@ -7,13 +7,13 @@ using UnityEngine.EventSystems;
 public class CardEventArgs : EventArgs
 {
     public Position Position { get; }
-    public CardType CardType { get; }
+    public CardView CardView { get; }
 
-    public CardEventArgs(Position position, CardType cardType)
+    public CardEventArgs(Position position, CardView cardView)
     {
         Position = position;
 
-        CardType = cardType;
+        CardView = cardView;
     }
 }
 
@@ -73,9 +73,9 @@ public class BoardView : MonoBehaviour
         if (sender is TileView tileView)
         {
             var position = PositionHelper.WorldToGridPosition(tileView.WorldPosition);
-            CardType cardType = eventData.pointerDrag.GetComponent<CardView>().Type;
+            CardView cardView = eventData.pointerDrag.GetComponent<CardView>();
             
-            OnCardDroppedOnTile(new CardEventArgs(position, cardType));
+            OnCardDroppedOnTile(new CardEventArgs(position, cardView));
         }
     }
 
@@ -84,9 +84,9 @@ public class BoardView : MonoBehaviour
         if (sender is TileView tileView)
         {
             var position = PositionHelper.WorldToGridPosition(tileView.WorldPosition);
-            CardType cardType = eventData.pointerDrag.GetComponent<CardView>().Type;
+            CardView cardView = eventData.pointerDrag.GetComponent<CardView>();
 
-            OnCardHoveredOverTile(new CardEventArgs(position, cardType));
+            OnCardHoveredOverTile(new CardEventArgs(position, cardView));
         }
     }
 

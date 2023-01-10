@@ -45,4 +45,10 @@ public class CardView : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
     {
         Destroy(_draggedCard);
     }
+
+    public void DestroyCard()
+    {
+        Destroy(_draggedCard);
+        Destroy(gameObject);
+    }
 }

@@ -8,12 +8,15 @@ public class GameLoop : MonoBehaviour
     private Board _board = new Board(PositionHelper.BoardRadius);
     private Engine _engine;
     private BoardView _boardView;
+    private Deck _deck;
 
     private void OnEnable()
     {
         _engine = new Engine(_board);
 
+        _deck = FindObjectOfType<Deck>();
         _boardView = FindObjectOfType<BoardView>();
+        
         _boardView.CardDroppedOnTile += CardDropped;
         _boardView.CardHoveredOverTile += CardHovered;
         _boardView.StopHoveredOverTile += StopHovered;
@@ -35,18 +38,22 @@ public class GameLoop : MonoBehaviour
 
     private void CardHovered(object sender, CardEventArgs cardEventArgs)
     {
-        var validPositions = _engine.MoveSets.MoveSet(cardEventArgs.CardType).Positions(cardEventArgs.Position);
+        var validPositions = _engine.MoveSets.MoveSet(cardEventArgs.CardView.Type).Positions(cardEventArgs.Position);
         _boardView.SetActivePositions(validPositions);
     }
 
 
     private void CardDropped(object sender, CardEventArgs cardEventArgs)
     {
-        var validPositions = _engine.MoveSets.MoveSet(cardEventArgs.CardType).Positions(cardEventArgs.Position);
+        var validPositions = _engine.MoveSets.MoveSet(cardEventArgs.CardView.Type).Positions(cardEventArgs.Position);
 
         if(validPositions.Count > 0)
         {
-            _engine.PlayCard(_engine.MoveSets.MoveSet(cardEventArgs.CardType), cardEventArgs.Position);
+            if(_engine.PlayCard(_engine.MoveSets.MoveSet(cardEventArgs.CardView.Type), cardEventArgs.Position))
+            {
+                cardEventArgs.CardView.DestroyCard();
+                _deck.DrawCard();
+            }
 
             List<Position> emptyList = new List<Position>();
             _boardView.SetActivePositions(emptyList);
