@@ -21,7 +21,7 @@ public class SlashCard : CardMoveSet
         foreach(Vector3 direction in MoveSetHelper.Directions)
         {
             Position position = PositionHelper.Add(Board.PlayerPosition, PositionHelper.WorldToGridPosition(direction));
-            while (Board.IsValid(position))
+            while (Board.IsValidPosition(position))
             {
                 _positions.Add(position);
 
@@ -47,7 +47,7 @@ public class SlashCard : CardMoveSet
                     Position direction = PositionHelper.GetDirection(hoverPosition, Board.PlayerPosition);
 
                     Position pos = PositionHelper.Add(Board.PlayerPosition, direction);
-                    while (Board.IsValid(pos))
+                    while (Board.IsValidPosition(pos))
                     {
                         _positions.Add(pos);
 

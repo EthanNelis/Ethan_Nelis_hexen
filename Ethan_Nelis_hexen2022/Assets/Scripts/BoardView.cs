@@ -23,17 +23,6 @@ public class BoardView : MonoBehaviour
     public event EventHandler<CardEventArgs> CardHoveredOverTile;
     public event EventHandler StopHoveredOverTile;
 
-    // public event EventHandler<CardEventArgs> CardDropped;
-
-
-    // public event EventHandler<CardEventArgs> PositionSelected;
-
-    //internal void SetActivePositions()
-    //{
-    //    throw new NotImplementedException();
-    //}
-
-
     private readonly Dictionary<Position, TileView> _positions = new Dictionary<Position, TileView>();
     private List<Position> _activatedPositions = new List<Position>();
 
@@ -112,7 +101,7 @@ public class BoardView : MonoBehaviour
         handler?.Invoke(this, cardEventArgs);
     }
 
-    private void OnStopHoveredOverTile(EventArgs e)
+    protected virtual void OnStopHoveredOverTile(EventArgs e)
     {
         var handler = StopHoveredOverTile;
         handler?.Invoke(this, e);

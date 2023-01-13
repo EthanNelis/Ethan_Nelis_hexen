@@ -9,7 +9,7 @@ public class MoveSetCollection
 {
     private Dictionary<CardType, CardMoveSet> _moveSets = new Dictionary<CardType, CardMoveSet>();
 
-    public CardMoveSet MoveSet(CardType cardType)
+    public CardMoveSet For(CardType cardType)
     {
         return _moveSets[cardType];
     }

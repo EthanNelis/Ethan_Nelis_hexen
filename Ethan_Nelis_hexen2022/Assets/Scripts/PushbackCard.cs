@@ -23,7 +23,7 @@ public class PushbackCard : CardMoveSet
         foreach (Vector3 direction in MoveSetHelper.Directions)
         {
             Position position = PositionHelper.Add(Board.PlayerPosition, PositionHelper.WorldToGridPosition(direction));
-            if (Board.IsValid(position))
+            if (Board.IsValidPosition(position))
             {
                 _positions.Add(position);
             }
@@ -72,10 +72,10 @@ public class PushbackCard : CardMoveSet
                     {
                         piece.MoveTo(PositionHelper.GridToWorldPosition(toPosition));
                     }
-                    else if (!Board.IsValid(toPosition))
+                    else if (!Board.IsValidPosition(toPosition))
                     {
-                        Board.Take(fromPosition);
                         piece.Taken();
+                        Board.Take(fromPosition);
                     }
                     
                 }

@@ -4,28 +4,22 @@ using UnityEngine;
 
 public struct Position
 {
-    private readonly int _q;
+    public readonly int Q;
 
-    private readonly int _r;
+    public readonly int R;
 
-    private readonly int _s;
-
-    public int Q => _q;
-
-    public int R => _r;
-
-    public int S => _s;
+    public readonly int S;
 
 
     public Position(int q, int r, int s)
     {
-        _q = q;
-        _r = r;
-        _s = s;
+        Q = q;
+        R = r;
+        S = s;
     }
 
     public override string ToString()
     {
-        return $"Q: {_q} R: {_r} S: {_s}";
+        return $"Q: {Q} R: {R} S: {S}";
     }
 }

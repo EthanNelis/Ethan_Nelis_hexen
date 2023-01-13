@@ -5,28 +5,22 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class CardView : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
+public class CardView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     [SerializeField]
     private CardType _type;
 
+    public CardType Type => _type;
+
     [SerializeField]
     private Image _image;
 
-    private GameObject _draggedCard;
-
-
-    public CardType Type => _type;
-
     public Image Image => _image;
+
+    private GameObject _draggedCard;
 
     public GameObject DraggedCard => _draggedCard;
 
-
-    public void OnDrag(PointerEventData eventData)
-    {
-        _draggedCard.transform.position = Input.mousePosition;
-    }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -39,6 +33,11 @@ public class CardView : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
         draggedCardImage.preserveAspect = true;
 
         draggedCardImage.raycastTarget = false;
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        _draggedCard.transform.position = Input.mousePosition;
     }
 
     public void OnEndDrag(PointerEventData eventData)

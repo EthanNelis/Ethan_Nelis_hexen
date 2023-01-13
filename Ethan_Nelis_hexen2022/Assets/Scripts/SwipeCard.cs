@@ -23,7 +23,7 @@ public class SwipeCard : CardMoveSet
         foreach (Vector3 direction in MoveSetHelper.Directions)
         {
             Position position = PositionHelper.Add(Board.PlayerPosition, PositionHelper.WorldToGridPosition(direction));
-            if (Board.IsValid(position))
+            if (Board.IsValidPosition(position))
             {
                 _positions.Add(position);
             }

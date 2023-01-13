@@ -5,21 +5,22 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-public class TileView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IDropHandler
+internal class TileView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IDropHandler
 {
-    public event EventHandler<PointerEventData> CardDropped;
-    
-    public event EventHandler<PointerEventData> CardHovered;
-
-    public event EventHandler StopHovered;
-
-    public Vector3 WorldPosition => transform.position;
-
     [SerializeField]
     private UnityEvent OnActivation;
 
     [SerializeField]
     private UnityEvent OnDeactivation;
+
+
+    public event EventHandler<PointerEventData> CardHovered;
+    public event EventHandler<PointerEventData> CardDropped;  
+    public event EventHandler StopHovered;
+
+
+    public Vector3 WorldPosition => transform.position;
+
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -34,6 +35,7 @@ public class TileView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void OnPointerExit(PointerEventData eventData)
     => OnStopHovered(EventArgs.Empty);
+
 
     protected virtual void OnCardHovered(PointerEventData eventData)
     {

@@ -22,6 +22,7 @@ public class Deck : MonoBehaviour
     private int _maxCardCount = 12;
     private int _maxCardsInHand = 5;
     private int _cardTypes = 4;
+    private int _maxCardsPerType;
 
     private List<CardView> _cards = new List<CardView>();
 
@@ -30,6 +31,8 @@ public class Deck : MonoBehaviour
 
     private void OnEnable()
     {
+        _maxCardsPerType = _maxCardCount / _cardTypes;
+
         InstantiateDeck(_maxCardCount);
 
         for (int i = 0; i < _maxCardsInHand; i++)
@@ -64,32 +67,52 @@ public class Deck : MonoBehaviour
 
     public CardView GetRandomCard()
     {
-        int randomValue = UnityEngine.Random.Range(0, _cardTypes);
-
         CardView cardView = null;
 
-        if(randomValue == 0)
+        while(cardView == null)
         {
-            cardView = Instantiate(_teleportCard, transform);
-        }
-        if(randomValue == 1)
-        {
-            cardView = Instantiate(_slashCard, transform);
+            int randomValue = UnityEngine.Random.Range(0, _cardTypes);
 
-        }
-        if (randomValue == 2)
-        {
-            cardView = Instantiate(_swipeCard, transform);
-        }
-        if (randomValue == 3)
-        {
-            cardView = Instantiate(_pushbackCard, transform);
+
+            if (randomValue == 0 && CanAddCardOfType(CardType.TeleportCard))
+            {
+                cardView = Instantiate(_teleportCard, transform);
+            }
+            if (randomValue == 1 && CanAddCardOfType(CardType.SlashCard))
+            {
+                cardView = Instantiate(_slashCard, transform);
+
+            }
+            if (randomValue == 2 && CanAddCardOfType(CardType.SwipeCard))
+            {
+                cardView = Instantiate(_swipeCard, transform);
+            }
+            if (randomValue == 3 && CanAddCardOfType(CardType.PushbackCard))
+            {
+                cardView = Instantiate(_pushbackCard, transform);
+            }
         }
 
         return cardView;
     }
 
+    private bool CanAddCardOfType(CardType type)
+    {
+        int counter = 0;
 
+        if (_cards.Count > 0)
+        {
+            foreach (CardView card in _cards)
+            {
+                if (card.Type == type)
+                {
+                    counter++;
+                }
+            }
+            return counter < _maxCardsPerType;
+        }
+        else return true;
+    }
 
 }
 

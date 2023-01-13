@@ -4,72 +4,74 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+public class PiecePlacedEventArgs
+{
+    public PieceView Piece { get; }
+
+    public Position ToPosition { get; }
+
+    public PiecePlacedEventArgs(PieceView piece, Position toPosition)
+    {
+        Piece = piece;
+        ToPosition = toPosition;
+    }
+}
+
+public class PieceMovedEventArgs
+{
+    public PieceView Piece { get; }
+
+    public Position FromPosition { get; }
+
+    public Position ToPosition { get; }
+
+    public PieceMovedEventArgs(PieceView piece, Position fromPosition, Position toPosition)
+    {
+        Piece = piece;
+        FromPosition = fromPosition;
+        ToPosition = toPosition;
+    }
+}
+
+public class PieceTakenEventArgs
+{
+    public PieceView Piece { get; }
+
+    public Position FromPosition { get; }
+
+    public PieceTakenEventArgs(PieceView piece, Position fromPosition)
+    {
+        Piece = piece;
+        FromPosition = fromPosition;
+    }
+}
+
 public class Board
 {
-    public class PiecePlacedEventArgs
-    {
-        public PieceView Piece { get; }
-
-        public Position ToPosition { get; }
-
-        public PiecePlacedEventArgs(PieceView piece, Position toPosition)
-        {
-            Piece = piece;
-            ToPosition = toPosition;
-        }
-    }
-
-    public class PieceTakenEventArgs
-    {
-        public PieceView Piece { get; }
-        
-        public Position FromPosition { get; }
-
-        public PieceTakenEventArgs(PieceView piece, Position fromPosition)
-        {
-            Piece = piece;
-            FromPosition = fromPosition;
-        }
-    }
-
-    public class PieceMovedEventArgs
-    {
-        public PieceView Piece { get; }
-    
-        public Position FromPosition { get; }
-
-        public Position ToPosition { get; }
-
-        public PieceMovedEventArgs(PieceView piece, Position fromPosition, Position toPosition)
-        {
-            Piece = piece;
-            FromPosition = fromPosition;
-            ToPosition = toPosition;
-        }
-    }
-
     private readonly int _radius;
 
-    
     private Dictionary<Position, PieceView> _pieces = new Dictionary<Position, PieceView>();
 
     private Position _playerPosition = new Position(0, 0, 0);
 
     public Position PlayerPosition => _playerPosition;
 
-    public Board(int radius)
-    {
-        _radius = radius;
-    }
 
     public event EventHandler<PieceMovedEventArgs> PieceMoved;
     public event EventHandler<PieceTakenEventArgs> PieceTaken;
     public event EventHandler<PiecePlacedEventArgs> PiecePlaced;
 
-    internal bool TryGetPieceAt(Position position, out PieceView piece)
+
+    public Board(int radius)
+    {
+        _radius = radius;
+    }
+
+
+    public bool TryGetPieceAt(Position position, out PieceView piece)
     => _pieces.TryGetValue(position, out piece);
 
-    internal bool IsValid(Position position)
+    internal bool IsValidPosition(Position position)
     => (position.Q <= _radius && position.Q >= -_radius)
     && (position.R <= _radius && position.R >= -_radius)
     && (position.S <= _radius && position.S >= -_radius);
@@ -77,7 +79,7 @@ public class Board
 
     public bool Place(PieceView piece, Position toPosition)
     {
-        if (!IsValid(toPosition))
+        if (!IsValidPosition(toPosition))
             return false;
 
         if (_pieces.ContainsKey(toPosition))
@@ -95,7 +97,7 @@ public class Board
 
     public bool Move(Position fromPosition, Position toPosition)
     {
-        if (!IsValid(toPosition))
+        if (!IsValidPosition(toPosition))
             return false;
 
         if (!_pieces.TryGetValue(fromPosition, out var piece))
