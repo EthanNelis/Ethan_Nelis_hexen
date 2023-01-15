@@ -50,6 +50,8 @@ public class Deck : MonoBehaviour
             _cards[index].transform.SetParent(_hand);
             _cards[index].gameObject.SetActive(true);
             _cards.RemoveAt(index);
+
+            Debug.Log("Drew Card at: " + index);
         }
     }
 
