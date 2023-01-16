@@ -19,6 +19,7 @@ internal class MenuState : GameState
     public override void OnExit()
     {
         _menuView.Hide();
+        _menuView.StartClicked -= (s, e) => StateMachine.MoveTo(PlayingState.Name);
         SceneManager.UnloadSceneAsync(2);
     }
 
