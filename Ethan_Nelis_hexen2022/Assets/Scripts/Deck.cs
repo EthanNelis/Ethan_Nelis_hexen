@@ -19,9 +19,12 @@ public class Deck : MonoBehaviour
     [SerializeField]
     private CardView _pushbackCard;
 
-    private int _maxCardCount = 12;
+    [SerializeField]
+    private CardView _meteorCard;
+
+    private int _maxCardCount = 15;
     private int _maxCardsInHand = 5;
-    private int _cardTypes = 4;
+    private int _cardTypes = 5;
     private int _maxCardsPerType;
 
     private List<CardView> _cards = new List<CardView>();
@@ -92,6 +95,10 @@ public class Deck : MonoBehaviour
             if (randomValue == 3 && CanAddCardOfType(CardType.PushbackCard))
             {
                 cardView = Instantiate(_pushbackCard, transform);
+            }
+            if (randomValue == 4 && CanAddCardOfType(CardType.MeteorCard))
+            {
+                cardView = Instantiate(_meteorCard, transform);
             }
         }
 

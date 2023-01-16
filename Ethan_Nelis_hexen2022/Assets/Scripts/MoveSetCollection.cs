@@ -20,6 +20,7 @@ public class MoveSetCollection
         _moveSets.Add(CardType.SlashCard, new SlashCard(board));
         _moveSets.Add(CardType.SwipeCard, new SwipeCard(board));
         _moveSets.Add(CardType.PushbackCard, new PushbackCard(board));
+        _moveSets.Add(CardType.MeteorCard, new MeteorCard(board));
     }
 
 }
