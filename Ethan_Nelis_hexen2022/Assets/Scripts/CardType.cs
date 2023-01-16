@@ -10,5 +10,6 @@ public enum CardType
     TeleportCard, 
     PushbackCard, 
     SwipeCard, 
-    SlashCard
+    SlashCard,
+    MeteorCard
 }

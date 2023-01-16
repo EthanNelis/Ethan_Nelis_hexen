@@ -1032,6 +1032,7 @@ MonoBehaviour:
   _slashCard: {fileID: 4489906164929865144, guid: e85f8f25e4431564eac7cf7ebcf6c0bc, type: 3}
   _swipeCard: {fileID: 4535600931448865170, guid: ff7557d3d65dc6649bb369bfc65e3e36, type: 3}
   _pushbackCard: {fileID: 1769856218116825417, guid: 5d7a4483d1c95854c8084a96d9ff918c, type: 3}
+  _meteorCard: {fileID: 251823960341692649, guid: 5a4abd1ca56f5704abb84759b9c501aa, type: 3}
   _hand: {fileID: 470774255}
 --- !u!1001 &1903432478
 PrefabInstance:
